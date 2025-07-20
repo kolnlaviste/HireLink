@@ -1,0 +1,24 @@
+# Node.js
+node_modules/
+.env
+
+# SvelteKit
+frontend/.svelte-kit/
+frontend/.vite/
+frontend/node_modules/
+frontend/build/
+
+# Backend
+backend/node_modules/
+backend/dist/
+
+# Prisma
+prisma/dev.db
+prisma/migrations/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
