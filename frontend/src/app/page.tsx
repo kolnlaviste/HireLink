@@ -2,15 +2,12 @@
 
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import Header from '../components/Header';
 
 export default function HomePage() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="bg-[#FFFFFF] text-[#424B54] min-h-screen flex flex-col">
-      <Header />
-
       <main className="flex-grow container mx-auto px-6 py-24 text-center">
         <h1 className="text-4xl md:text-5xl font-extrabold text-[#424B54] mb-6 tracking-tight">
           Discover Your Next Opportunity
