@@ -78,7 +78,7 @@ const Header = () => {
               </button>
             </div>
             <div className="space-y-4">
-              <a href="#" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
+              <a href="/jobs" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
                 Jobs
               </a>
               <a href="#" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
