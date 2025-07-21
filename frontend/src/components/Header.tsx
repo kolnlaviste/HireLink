@@ -3,6 +3,7 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -15,30 +16,30 @@ const Header = () => {
         </div>
 
         <div className="hidden lg:flex lg:items-center lg:gap-x-10">
-          <a href="#" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">
+          <Link href="/jobs" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">
             Jobs
-          </a>
-          <a href="#" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">
+          </Link>
+          <Link href="#" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">
             Companies
-          </a>
-          <a href="#" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">
+          </Link>
+          <Link href="#" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">
             About
-          </a>
+          </Link>
         </div>
 
         <div className="hidden lg:flex lg:items-center lg:gap-x-4">
-          <a
+          <Link
             href="#"
             className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A] transition"
           >
             Login
-          </a>
-          <a
+          </Link>
+          <Link
             href="#"
             className="text-sm font-medium rounded-md bg-[#E1CE7A] text-[#424B54] px-4 py-2 hover:bg-[#ebcfb2] transition"
           >
             Sign Up
-          </a>
+          </Link>
         </div>
 
         <div className="lg:hidden">
@@ -78,28 +79,28 @@ const Header = () => {
               </button>
             </div>
             <div className="space-y-4">
-              <a href="/jobs" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
+              <Link href="/jobs" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
                 Jobs
-              </a>
-              <a href="#" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
+              </Link>
+              <Link href="#" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
                 Companies
-              </a>
-              <a href="#" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
+              </Link>
+              <Link href="#" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
                 About
-              </a>
+              </Link>
               <div className="pt-4 border-t border-gray-200 mt-4">
-                <a
+                <Link
                   href="#"
                   className="block w-full text-center text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]"
                 >
                   Login
-                </a>
-                <a
+                </Link>
+                <Link
                   href="#"
                   className="mt-2 block w-full text-center text-sm font-medium bg-[#E1CE7A] text-[#424B54] rounded-md py-2 hover:bg-[#ebcfb2]"
                 >
                   Sign Up
-                </a>
+                </Link>
               </div>
             </div>
           </Dialog.Panel>
