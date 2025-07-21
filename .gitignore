@@ -2,11 +2,6 @@
 node_modules/
 .env
 
-# SvelteKit
-frontend/.svelte-kit/
-frontend/.vite/
-frontend/node_modules/
-frontend/build/
 
 # Backend
 backend/node_modules/
