@@ -31,7 +31,7 @@ const Header = () => {
 
         <div className="hidden lg:flex lg:items-center lg:gap-x-4">
           <Link
-            href="#"
+            href="/login"
             className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A] transition"
           >
             Login
@@ -92,7 +92,7 @@ const Header = () => {
               </Link>
               <div className="pt-4 border-t border-gray-200 mt-4">
                 <Link
-                  href="#"
+                  href="/login"
                   className="block w-full text-center text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]"
                 >
                   Login
