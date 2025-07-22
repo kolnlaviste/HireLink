@@ -5,7 +5,7 @@ export const jobs = [
     id: 1,
     title: 'Frontend Developer',
     company: 'Elinnov Technologies',
-    location: 'Cebu City, PH',
+    location: 'Manila, PH',
     type: 'Full-time',
     salary: '₱40,000 - ₱60,000/month',
     tags: ['React', 'TailwindCSS', 'Next.js'],
