@@ -15,7 +15,7 @@ export default function CompaniesPage() {
           >
             <h2 className="text-xl font-semibold text-[#424B54]">{company.name}</h2>
             <p className="text-gray-600 mt-2">{company.description}</p>
-            <p className="text-sm text-gray-500 mt-1">📍 {company.location}</p>
+            <p className="text-sm text-gray-500 mt-1">• {company.location}</p>
           </div>
         ))}
       </div>
