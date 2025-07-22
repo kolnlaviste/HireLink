@@ -3,6 +3,7 @@
 export type Company = {
   id: string;
   name: string;
+  slug: string;
   description: string;
   location: string;
   website: string;
@@ -14,9 +15,10 @@ export const companies: Company[] = [
   {
     id: "elinnov",
     name: "Elinnov Technologies",
+    slug: 'elinnov-technologies',
     description:
       "Elinnov Technologies is a digital solutions provider specializing in web development, cloud services, and enterprise software.",
-    location: "Cebu City, Philippines",
+    location: "Manila, Philippines",
     website: "https://elinnovtech.com",
     logo: "/logos/Elinnov.jpeg", // ✅ CORRECT path
     industry: "Information Technology",
@@ -24,6 +26,7 @@ export const companies: Company[] = [
   {
     id: "shoppable",
     name: "Shoppable Business",
+    slug: 'shoppable-business',
     description:
       "Shoppable Business is a B2B tech startup building modern infrastructure for digital commerce and business procurement.",
     location: "Manila, Philippines",
