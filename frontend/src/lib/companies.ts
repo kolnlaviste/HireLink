@@ -6,7 +6,7 @@ export type Company = {
   description: string;
   location: string;
   website: string;
-  logoUrl: string;
+  logo: string;
   industry: string;
 };
 
@@ -18,7 +18,7 @@ export const companies: Company[] = [
       "Elinnov Technologies is a digital solutions provider specializing in web development, cloud services, and enterprise software.",
     location: "Cebu City, Philippines",
     website: "https://elinnovtech.com",
-    logoUrl: "../public/logos/elinnov.jpeg", 
+    logo: "../public/logos/elinnov.jpeg", 
     industry: "Information Technology",
   },
   {
@@ -28,7 +28,7 @@ export const companies: Company[] = [
       "Shoppable Business is a B2B tech startup building modern infrastructure for digital commerce and business procurement.",
     location: "Manila, Philippines",
     website: "https://shoppable.business", 
-    logoUrl: "../public/logos/shoppable.png", 
+    logo: "../public/logos/shoppable.png", 
     industry: "E-Commerce / B2B Tech",
   },
 ];
