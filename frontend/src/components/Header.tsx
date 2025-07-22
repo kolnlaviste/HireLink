@@ -21,7 +21,7 @@ const Header = () => {
           <Link href="/jobs" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">
             Jobs
           </Link>
-          <Link href="#" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">
+          <Link href="/companies" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">
             Companies
           </Link>
           <Link href="#" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">
