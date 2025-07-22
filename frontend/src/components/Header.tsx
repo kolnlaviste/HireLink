@@ -12,7 +12,9 @@ const Header = () => {
     <header className="bg-white border-b border-[#E0E0E0]">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global">
         <div className="flex items-center gap-4">
-          <span className="text-2xl font-bold text-[#424B54]">HireLink</span>
+          <Link href="/">
+            <span className="text-2xl font-bold text-[#424B54]">HireLink</span>
+          </Link>
         </div>
 
         <div className="hidden lg:flex lg:items-center lg:gap-x-10">

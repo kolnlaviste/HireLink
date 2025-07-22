@@ -1,10 +1,11 @@
-'use client'
+'use client';
 
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
 export default function HomePage() {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <div className="bg-[#FFFFFF] text-[#424B54] min-h-screen flex flex-col">
@@ -12,9 +13,20 @@ export default function HomePage() {
         <h1 className="text-4xl md:text-5xl font-extrabold text-[#424B54] mb-6 tracking-tight">
           Discover Your Next Opportunity
         </h1>
-        <p className="text-base md:text-lg text-[#646B75] max-w-xl mx-auto mb-10">
+        <p className="text-base md:text-lg text-[#646B75] max-w-xl mx-auto mb-6">
           HireLink is where talent meets opportunity. Find jobs, connect with forward-thinking companies, and take control of your career path.
         </p>
+
+        {/* 🔍 Search Bar */}
+        <div className="max-w-md mx-auto mb-4">
+          <input
+            type="text"
+            placeholder="Search for jobs..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#E1CE7A] focus:border-transparent"
+          />
+        </div>
 
         <button
           className="bg-[#E1CE7A] text-[#424B54] font-medium px-6 py-3 rounded-lg shadow-sm hover:bg-[#EBCFB2] transition"
