@@ -1,100 +1,55 @@
-// app/jobs/[id]/page.tsx
 'use client';
 
 import { useParams } from 'next/navigation';
 import { Tab } from '@headlessui/react';
 import classNames from 'classnames';
-
-const job = {
-  title: 'Frontend Developer',
-  company: 'Elinnov Technologies',
-  location: 'Cebu City, PH',
-  description: `Elinnov Technologies is seeking a skilled Frontend Developer to join our growing development team. As a Frontend Developer, you will be responsible for crafting modern, responsive, and accessible web interfaces for a variety of client and in-house projects. You will collaborate with UI/UX designers, backend developers, and product managers to bring digital products to life.
-
-✅ Responsibilities:
-Convert design mockups (Figma, Adobe XD) into responsive web pages using React, Next.js, and TailwindCSS
-
-Build reusable components and front-end libraries for future use
-
-Optimize applications for maximum speed and scalability
-
-Collaborate with backend developers to integrate APIs and ensure seamless functionality
-
-Ensure technical feasibility of UI/UX designs
-
-Maintain and improve code quality through code reviews and testing
-
-Stay up to date with emerging frontend technologies and propose improvements
-
-📌 Tech Stack:
-React / Next.js
-
-TypeScript / JavaScript (ES6+)
-
-TailwindCSS / SCSS
-
-Git & GitHub
-
-REST APIs & JSON
-
-Vercel / Netlify / CI-CD Pipelines (optional but a plus)
-
-👤 Qualifications:
-1–3 years of experience in frontend development
-
-Solid understanding of semantic HTML5, CSS3, and JavaScript
-
-Experience with React or Next.js in production projects
-
-Familiarity with responsive and mobile-first design
-
-Basic understanding of accessibility standards (WCAG, ARIA)
-
-Ability to collaborate effectively in a cross-functional team
-
-Excellent attention to detail and a passion for clean, maintainable code
-
-Bonus: Familiarity with headless CMS, GraphQL, or testing libraries (e.g. Jest, Testing Library)`,
-  about: `Elinnov Technologies is a Cebu-based software development firm specializing in innovative digital solutions for businesses across the globe. We combine modern web technologies with scalable architectures to craft intuitive, performant applications.
-
-Our portfolio spans web applications, mobile solutions, and cloud-native systems for industries such as e-commerce, education, and enterprise automation. At Elinnov, we believe in continuous learning, open collaboration, and delivering with excellence.
-
-Why Join Us?
-
-Work with a passionate, tight-knit development team
-
-Competitive compensation and performance bonuses
-
-Learning budget and professional development support
-
-Flexible work hours and a hybrid work environment
-
-Opportunity to contribute to meaningful products that scale
-
-`,
-  apply: `Submit your updated resume, GitHub/portfolio link, and a brief cover letter explaining why you're a good fit for the role to:
-
-📧 careers@elinnov.com
-📎 Subject line: Application – Frontend Developer – [Your Name]
-
-Applications are reviewed on a rolling basis. Only shortlisted candidates will be contacted for interviews.`,
-};
+import { jobs } from '@/lib/jobs';
+import Link from 'next/link'; // Required for linking related jobs
 
 const tabs = ['Overview', 'Company', 'How to Apply'];
 
-const JobDetailsPage = () =>{
+const JobDetailsPage = () => {
   const params = useParams();
   const jobId = params?.id;
+  const job = jobs.find((job) => String(job.id) === jobId);
+
+  if (!job) {
+    return (
+      <main className="max-w-5xl mx-auto px-4 py-10 text-center">
+        <h1 className="text-2xl font-semibold text-red-500">Job not found</h1>
+        <p className="mt-2 text-gray-600">The job you’re looking for doesn’t exist or has been removed.</p>
+      </main>
+    );
+  }
+
+  const relatedJobs = jobs.filter((j) => j.id !== job.id).slice(0, 3); // Show 3 other jobs
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-10">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-[#424B54]">{job.title}</h1>
-        <p className="text-[#424B54] mt-1">{job.company} • {job.location}</p>
+        <p className="text-[#424B54] mt-1">
+          {job.company} • {job.location}
+        </p>
+      </div>
+
+      <p className="mt-2 text-[#424B54]">
+        <strong>Type:</strong> {job.type} • <strong>Salary:</strong> {job.salary}
+      </p>
+
+      <div className="flex flex-wrap gap-2 mt-2">
+        {job.tags?.map((tag: string) => (
+          <span
+            key={tag}
+            className="bg-[#E1CE7A] text-[#424B54] px-3 py-1 rounded-full text-xs font-medium"
+          >
+            {tag}
+          </span>
+        ))}
       </div>
 
       <Tab.Group>
-        <Tab.List className="flex space-x-2 border-b border-[#E0E0E0] mb-4">
+        <Tab.List className="flex space-x-2 border-b border-[#E0E0E0] mb-4 mt-6">
           {tabs.map((tab) => (
             <Tab
               key={tab}
@@ -126,12 +81,42 @@ const JobDetailsPage = () =>{
       </Tab.Group>
 
       <div className="mt-6">
-        <button className="bg-[#E1CE7A] hover:bg-[#ebcfb2] text-[#424B54] font-medium px-6 py-3 rounded-md">
+        <a
+          href={`mailto:careers@elinnov.com?subject=Application – ${encodeURIComponent(
+            job.title
+          )}`}
+          className="bg-[#E1CE7A] hover:bg-[#ebcfb2] text-[#424B54] font-medium px-6 py-3 rounded-md inline-block"
+        >
           Apply Now
-        </button>
+        </a>
       </div>
+
+      {/* Related Jobs Section */}
+      <section className="mt-10">
+        <h2 className="text-2xl font-semibold text-[#424B54] mb-4">Related Jobs</h2>
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+          {relatedJobs.map((related) => (
+            <Link
+              key={related.id}
+              href={`/jobs/${related.id}`}
+              className="block p-4 border border-[#E1CE7A] rounded-md hover:shadow-sm transition"
+            >
+              <h3 className="font-semibold text-[#424B54] text-lg">{related.title}</h3>
+              <p className="text-sm text-[#666] mt-1">{related.company} • {related.location}</p>
+              <p className="text-sm text-[#666] mt-1">{related.type} • {related.salary}</p>
+              <div className="flex flex-wrap gap-1 mt-2">
+                {related.tags.slice(0, 3).map((tag: string) => (
+                  <span key={tag} className="bg-[#E1CE7A] text-[#424B54] px-2 py-0.5 rounded-full text-xs">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </main>
   );
-}
+};
 
 export default JobDetailsPage;

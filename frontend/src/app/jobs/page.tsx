@@ -1,23 +1,10 @@
 // app/jobs/page.tsx
 
 import React from 'react';
+import Link from 'next/link';
+import { jobs } from '@/lib/jobs';
 
-const jobs = [
-  {
-    id: 1,
-    title: 'Frontend Developer',
-    company: 'Elinnov Technologies',
-    location: 'Cebu City',
-    type: 'Full-time',
-  },
-  {
-    id: 2,
-    title: 'Backend Developer',
-    company: 'Shoppable Business',
-    location: 'Remote',
-    type: 'Contract',
-  },
-];
+
 
 export default function JobsPage() {
   return (
@@ -26,7 +13,7 @@ export default function JobsPage() {
 
       <div className="space-y-4">
         {jobs.map((job) => (
-          <a
+          <Link
             key={job.id}
             href={`/jobs/${job.id}`}
             className="block border rounded-md p-4 hover:bg-[#EBcfB2] transition"
@@ -36,7 +23,7 @@ export default function JobsPage() {
             <span className="inline-block mt-2 text-xs font-semibold bg-[#E1CE7A] text-[#424B54] px-2 py-1 rounded">
               {job.type}
             </span>
-          </a>
+          </Link>
         ))}
       </div>
     </main>
