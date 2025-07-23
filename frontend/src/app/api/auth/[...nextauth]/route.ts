@@ -6,21 +6,36 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        // implement your login logic here
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        // Temporary mock user
         const user = {
           id: '1',
           name: 'Test User',
-          email: credentials?.email,
+          email: credentials.email,
         };
 
-        return user;
+        // In real usage, validate credentials from your DB here
+        if (
+          credentials.email === 'test@example.com' &&
+          credentials.password === 'password123'
+        ) {
+          return user;
+        }
+
+        return null;
       },
     }),
   ],
+  pages: {
+    signIn: '/login', // Optional: custom login page
+  },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
