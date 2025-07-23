@@ -32,6 +32,13 @@ const Header = () => {
         </div>
 
         <div className="hidden lg:flex lg:items-center lg:gap-x-4">
+          <Link
+            href="/post-job"
+            className="text-sm font-medium rounded-md bg-[#424B54] text-white px-4 py-2 hover:bg-[#2f353c] transition"
+          >
+            Post a Job
+          </Link>
+
           {status === 'loading' ? (
             <p className="text-sm text-gray-500">Loading...</p>
           ) : session ? (
@@ -98,6 +105,7 @@ const Header = () => {
             </>
           )}
         </div>
+
 
         <div className="lg:hidden">
           <button
