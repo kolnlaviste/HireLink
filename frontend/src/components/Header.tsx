@@ -1,8 +1,9 @@
 'use client';
 
 import { Fragment, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, Transition, Menu } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { useSession, signIn, signOut } from 'next-auth/react';
 
@@ -34,15 +35,40 @@ const Header = () => {
           {status === 'loading' ? (
             <p className="text-sm text-gray-500">Loading...</p>
           ) : session ? (
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[#424B54]">Hi, {userName}</span>
-              <button
-                onClick={() => signOut()}
-                className="text-sm font-medium rounded-md bg-red-500 text-white px-4 py-2 hover:bg-red-600 transition"
+            <Menu as="div" className="relative inline-block text-left">
+              <div>
+                <Menu.Button className="inline-flex justify-center items-center gap-1 text-sm font-medium text-[#424B54] hover:text-[#E1CE7A] transition">
+                  Hi, {userName}
+                  <ChevronDownIcon className="w-4 h-4" />
+                </Menu.Button>
+              </div>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
               >
-                Sign Out
-              </button>
-            </div>
+                <Menu.Items className="absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                  <div className="py-1">
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          onClick={() => signOut()}
+                          className={`${
+                            active ? 'bg-gray-100' : ''
+                          } block w-full text-left px-4 py-2 text-sm text-gray-700`}
+                        >
+                          Sign Out
+                        </button>
+                      )}
+                    </Menu.Item>
+                  </div>
+                </Menu.Items>
+              </Transition>
+            </Menu>
           ) : (
             <>
               <button
