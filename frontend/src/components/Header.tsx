@@ -55,6 +55,18 @@ const Header = () => {
                   <div className="py-1">
                     <Menu.Item>
                       {({ active }) => (
+                        <Link
+                          href="/profile"
+                          className={`${
+                            active ? 'bg-gray-100' : ''
+                          } block px-4 py-2 text-sm text-gray-700`}
+                        >
+                          Profile
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
                         <button
                           onClick={() => signOut()}
                           className={`${
@@ -140,7 +152,13 @@ const Header = () => {
                   <p className="text-sm text-gray-500">Loading...</p>
                 ) : session ? (
                   <>
-                    <span className="block text-sm font-medium text-[#424B54]">Hi, {userName}</span>
+                    <Link
+                      href="/profile"
+                      className="block text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]"
+                    >
+                      Hi, {userName}
+                    </Link>
+
                     <button
                       onClick={() => signOut()}
                       className="mt-2 block w-full text-center text-sm font-medium bg-red-500 text-white rounded-md py-2 hover:bg-red-600"
