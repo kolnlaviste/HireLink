@@ -20,85 +20,96 @@ export default function HomeClient({ session }: Props) {
   }
 
   return (
-    <div className="bg-[#FFFFFF] text-[#424B54] min-h-screen flex flex-col">
-      <main className="flex-grow container mx-auto px-6 py-24 text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-[#424B54] mb-6 tracking-tight">
-          Discover Your Next Opportunity
+    <div
+      className="relative h-screen w-full bg-[url('/images/bg.jpg')] bg-cover bg-center bg-no-repeat"
+    >
+      {/* Black overlay */}
+      <div className="absolute inset-0 bg-black/70"></div>
+
+      {/* Hero content */}
+      <main className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center text-white">
+        {/* Heading */}
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+          We offering <span className="text-blue-400">1,000</span> job vacancies today!
         </h1>
-        <p className="text-base md:text-lg text-[#646B75] max-w-xl mx-auto mb-6">
-          HireLink is where talent meets opportunity. Find jobs, connect with forward-thinking companies, and take control of your career path.
+        <p className="text-base md:text-lg max-w-xl mb-8">
+          Find your dream job with us. We connect you with top companies and help you take the next step in your career.
         </p>
 
-        {/* 🔍 Search Bar */}
-        <div className="max-w-md mx-auto mb-4">
+        {/* Search bar */}
+        <div className="flex mt-4 justify-center">
           <input
             type="text"
-            placeholder="Search for jobs..."
+            placeholder="Search for jobs, companies, or skills"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#E1CE7A] focus:border-transparent"
+            className="placeholder-gray-400 w-64 md:w-80 px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800"
           />
+          <input
+            type="text"
+            placeholder="City, State, or Zip"
+            className="placeholder-gray-400 w-40 md:w-56 px-4 py-2 border border-l border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800"
+          />
+          <button
+            className="px-4 py-2 rounded-r-md bg-blue-600 text-white hover:bg-blue-700 transition"
+            onClick={() => setIsOpen(true)}
+          >
+            Find Jobs
+          </button>
         </div>
-
-        <button
-          className="bg-[#E1CE7A] text-[#424B54] font-medium px-6 py-3 rounded-lg shadow-sm hover:bg-[#EBCFB2] transition"
-          onClick={() => setIsOpen(true)}
-        >
-          Learn More
-        </button>
-
-        {/* Dialog Component */}
-        <Transition appear show={isOpen} as={Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm" />
-            </Transition.Child>
-
-            <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center">
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 scale-95"
-                  enterTo="opacity-100 scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 scale-100"
-                  leaveTo="opacity-0 scale-95"
-                >
-                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-xl bg-white p-6 text-left shadow-xl transition-all">
-                    <Dialog.Title className="text-lg font-semibold text-[#424B54]">
-                      About HireLink
-                    </Dialog.Title>
-                    <div className="mt-2">
-                      <p className="text-sm text-[#646B75] leading-relaxed">
-                        HireLink is your job discovery partner. Seamlessly browse opportunities or post your openings. We’ve crafted a clean, simple experience that puts users first.
-                      </p>
-                    </div>
-
-                    <div className="mt-4 flex justify-end">
-                      <button
-                        type="button"
-                        className="rounded-md bg-[#424B54] text-white px-4 py-2 text-sm hover:bg-[#2E3640] transition"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Got it!
-                      </button>
-                    </div>
-                  </Dialog.Panel>
-                </Transition.Child>
-              </div>
-            </div>
-          </Dialog>
-        </Transition>
       </main>
+
+      {/* Dialog component */}
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-20" onClose={() => setIsOpen(false)}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-xl bg-white p-6 text-left shadow-xl transition-all">
+                  <Dialog.Title className="text-lg font-semibold text-[#424B54]">
+                    About HireLink
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    <p className="text-sm text-[#646B75] leading-relaxed">
+                      HireLink is your job discovery partner. Seamlessly browse opportunities or post your openings. We’ve crafted a clean, simple experience that puts users first.
+                    </p>
+                  </div>
+
+                  <div className="mt-4 flex justify-end">
+                    <button
+                      type="button"
+                      className="rounded-md bg-[#424B54] text-white px-4 py-2 text-sm hover:bg-[#2E3640] transition"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Got it!
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 }

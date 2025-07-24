@@ -5,6 +5,7 @@ import { Dialog, Transition, Menu } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSession, signIn, signOut } from 'next-auth/react';
 
 const Header = () => {
@@ -21,20 +22,27 @@ const Header = () => {
       >
         <div className="flex items-center gap-4">
           <Link href="/">
-            <span className="text-2xl font-bold text-[#424B54]">HireLink</span>
+            <Image
+              src="/images/logo.png"
+              alt="HireLink Logo"
+              width={80}   // Adjust to your preferred logo width
+              height={40}   // Keeps correct aspect ratio
+              className="h-10 w-auto gap-4" // h-10 = 40px, auto scales width proportionally
+            />
           </Link>
         </div>
 
-        <div className="hidden lg:flex lg:items-center lg:gap-x-10">
-          <Link href="/jobs" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">Jobs</Link>
-          <Link href="/companies" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">Companies</Link>
-          <Link href="#" className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]">About</Link>
+        <div className="flex-1 justify-center gap-8 hidden lg:flex lg:items-center lg:gap-x-10">
+          <Link href="/" className="text-sm font-medium text-[#424B54] hover:text-blue-400">Home</Link>
+          <Link href="/jobs" className="text-sm font-medium text-[#424B54] hover:text-blue-400">Jobs</Link>
+          <Link href="/companies" className="text-sm font-medium text-[#424B54] hover:text-blue-400">Companies</Link>
+          <Link href="#" className="text-sm font-medium text-[#424B54] hover:text-blue-400">About</Link>
         </div>
 
         <div className="hidden lg:flex lg:items-center lg:gap-x-4">
           <Link
             href="/post-job"
-            className="text-sm font-medium rounded-md bg-[#424B54] text-white px-4 py-2 hover:bg-[#2f353c] transition"
+            className="text-sm font-medium rounded-md bg-blue-600 text-white px-4 py-2 hover:bg-[#2f353c] transition"
           >
             Post a Job
           </Link>
@@ -138,7 +146,7 @@ const Header = () => {
               <button
                 type="button"
                 className="text-[#424B54] hover:text-[#E1CE7A]"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => setMobileMenuOpen(false)}  
               >
                 <XMarkIcon className="h-6 w-6" />
               </button>
