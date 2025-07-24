@@ -37,26 +37,30 @@ export default function HomeClient({ session }: Props) {
         </p>
 
         {/* Search bar */}
-        <div className="flex flex-wrap mt-4 justify-center px-4">
+        <div className="flex flex-nowrap mt-4 justify-center px-4 gap-0 w-full max-w-full">
           <input
             type="text"
             placeholder="Search for jobs, companies, or skills"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="placeholder-gray-400 flex-grow max-w-[320px] sm:max-w-none px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800 min-w-[150px]"
+            className="placeholder-gray-400 px-3 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800 text-sm 
+                      w-[45%] sm:w-[300px] min-w-[120px]"
           />
           <input
             type="text"
             placeholder="City, State, or Zip"
-            className="placeholder-gray-400 flex-grow max-w-[224px] sm:max-w-none px-4 py-2 border border-l border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800 min-w-[120px]"
+            className="placeholder-gray-400 px-3 py-2 border border-l border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800 text-sm 
+                      w-[35%] sm:w-[200px] min-w-[100px]"
           />
           <button
-            className="px-4 py-2 rounded-r-md bg-blue-600 text-white hover:bg-blue-700 transition flex-shrink-0"
+            className="px-3 py-2 rounded-r-md bg-blue-600 text-white hover:bg-blue-700 transition text-sm w-[20%] sm:w-auto min-w-[80px] flex-shrink-0"
             onClick={() => setIsOpen(true)}
           >
             Find Jobs
           </button>
         </div>
+
+
       </main>
 
       {/* Dialog component */}
