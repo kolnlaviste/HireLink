@@ -25,9 +25,9 @@ const Header = () => {
             <Image
               src="/images/logo.png"
               alt="HireLink Logo"
-              width={95}   // Adjust to your preferred logo width
-              height={40}   // Keeps correct aspect ratio
-              className="h-10 w-auto gap-4" // h-10 = 40px, auto scales width proportionally
+              width={95}   
+              height={40}  
+              className="h-10 w-auto gap-4" 
             />
           </Link>
         </div>
@@ -153,13 +153,16 @@ const Header = () => {
             </div>
 
             <div className="space-y-4">
-              <Link href="/jobs" className="block text-base font-medium text-[#424B54] hover:text-blue-600">
+              <Link href="/" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+                Home
+              </Link>
+              <Link href="/jobs" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
                 Jobs
               </Link>
-              <Link href="/companies" className="block text-base font-medium text-[#424B54] hover:text-blue-600">
+              <Link href="/companies" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
                 Companies
               </Link>
-              <Link href="#" className="block text-base font-medium text-[#424B54] hover:text-blue-600">
+              <Link href="#" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
                 About
               </Link>
 
