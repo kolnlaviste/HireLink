@@ -25,7 +25,7 @@ const Header = () => {
             <Image
               src="/images/logo.png"
               alt="HireLink Logo"
-              width={80}   // Adjust to your preferred logo width
+              width={100}   // Adjust to your preferred logo width
               height={40}   // Keeps correct aspect ratio
               className="h-10 w-auto gap-4" // h-10 = 40px, auto scales width proportionally
             />
