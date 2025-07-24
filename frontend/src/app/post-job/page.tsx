@@ -11,25 +11,35 @@ const PostJobPage = () => {
     location: '',
     type: 'Full-time',
     salary: '',
+    tags: '',
     description: '',
-    requirements: '',
-    applyLink: '',
+    about: '',
+    apply: ''
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Convert comma-separated tags to array
+    const payload = {
+      ...form,
+      tags: form.tags.split(',').map((tag) => tag.trim())
+    };
+
     const res = await fetch('/api/jobs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify(payload)
     });
 
     if (res.ok) {
-      router.push('/jobs'); // Redirect to job listings after posting
+      router.push('/jobs');
     }
   };
 
@@ -82,31 +92,40 @@ const PostJobPage = () => {
           onChange={handleChange}
           className="w-full p-3 border rounded"
         />
+        <input
+          type="text"
+          name="tags"
+          placeholder="Tags (comma separated)"
+          value={form.tags}
+          onChange={handleChange}
+          className="w-full p-3 border rounded"
+        />
         <textarea
           name="description"
           placeholder="Job Description"
           value={form.description}
           onChange={handleChange}
-          rows={5}
+          rows={4}
           required
           className="w-full p-3 border rounded"
         />
         <textarea
-          name="requirements"
-          placeholder="Requirements"
-          value={form.requirements}
+          name="about"
+          placeholder="About the Company"
+          value={form.about}
           onChange={handleChange}
-          rows={4}
+          rows={3}
           className="w-full p-3 border rounded"
         />
-        <input
-          type="text"
-          name="applyLink"
-          placeholder="Apply Link or Email"
-          value={form.applyLink}
+        <textarea
+          name="apply"
+          placeholder="How to Apply"
+          value={form.apply}
           onChange={handleChange}
+          rows={3}
           className="w-full p-3 border rounded"
         />
+
         <button
           type="submit"
           className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700"

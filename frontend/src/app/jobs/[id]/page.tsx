@@ -3,32 +3,64 @@
 import { useParams } from 'next/navigation';
 import { Tab } from '@headlessui/react';
 import classNames from 'classnames';
-import { jobs } from '@/lib/jobs';
 import { companies } from '@/lib/companies';
-import Link from 'next/link'; 
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const tabs = ['Overview', 'Company', 'How to Apply'];
 
 const JobDetailsPage = () => {
   const params = useParams();
-  const jobId = params?.id;
-  const job = jobs.find((job) => String(job.id) === jobId);
+  const jobId = params?.id; // always string
+  const [job, setJob] = useState<any>(null);
+  const [relatedJobs, setRelatedJobs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchJobData = async () => {
+      try {
+        const res = await fetch('/api/jobs');
+        const data = await res.json();
+
+        // Normalize ID comparison
+        const found = data.find((j: any) => String(j.id) === String(jobId));
+        setJob(found);
+
+        const related = data.filter((j: any) => String(j.id) !== String(jobId)).slice(0, 3);
+        setRelatedJobs(related);
+      } catch (error) {
+        console.error('Error fetching job details:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobData();
+  }, [jobId]);
+
   const getSlug = (companyName: string) => {
-  const company = companies.find((c) => c.name === companyName);
+    const company = companies.find((c) => c.name === companyName);
     return company ? company.slug : '';
   };
 
+  if (loading) {
+    return (
+      <main className="max-w-5xl mx-auto px-4 py-10 text-center">
+        <p className="text-gray-600">Loading job details...</p>
+      </main>
+    );
+  }
 
   if (!job) {
     return (
       <main className="max-w-5xl mx-auto px-4 py-10 text-center">
         <h1 className="text-2xl font-semibold text-red-500">Job not found</h1>
-        <p className="mt-2 text-gray-600">The job you’re looking for doesn’t exist or has been removed.</p>
+        <p className="mt-2 text-gray-600">
+          The job you’re looking for doesn’t exist or has been removed.
+        </p>
       </main>
     );
   }
-
-  const relatedJobs = jobs.filter((j) => j.id !== job.id).slice(0, 3); // Show 3 other jobs
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-10">
@@ -36,13 +68,11 @@ const JobDetailsPage = () => {
         <h1 className="text-3xl font-bold text-[#424B54]">{job.title}</h1>
         <p className="text-[#424B54] mt-1">
           <span>
-            <Link
-            href={`/companies/${getSlug(job.company)}`}
-            className="hover:text-blue-700"
-            >
+            <Link href={`/companies/${getSlug(job.company)}`} className="hover:text-blue-700">
               {job.company}
             </Link>
-          </span> • {job.location}
+          </span>{' '}
+          • {job.location}
         </p>
       </div>
 
@@ -95,16 +125,14 @@ const JobDetailsPage = () => {
 
       <div className="mt-6">
         <a
-          href={`mailto:careers@elinnov.com?subject=Application – ${encodeURIComponent(
-            job.title
-          )}`}
+          href={`mailto:careers@elinnov.com?subject=Application – ${encodeURIComponent(job.title)}`}
           className="bg-[#E1CE7A] hover:bg-[#ebcfb2] text-[#424B54] font-medium px-6 py-3 rounded-md inline-block"
         >
           Apply Now
         </a>
       </div>
 
-      {/* Related Jobs Section */}
+      {/* Related Jobs */}
       <section className="mt-10">
         <h2 className="text-2xl font-semibold text-[#424B54] mb-4">Related Jobs</h2>
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
@@ -115,11 +143,18 @@ const JobDetailsPage = () => {
               className="block p-4 border border-[#E1CE7A] rounded-md hover:shadow-sm transition"
             >
               <h3 className="font-semibold text-[#424B54] text-lg">{related.title}</h3>
-              <p className="text-sm text-[#666] mt-1">{related.company} • {related.location}</p>
-              <p className="text-sm text-[#666] mt-1">{related.type} • {related.salary}</p>
+              <p className="text-sm text-[#666] mt-1">
+                {related.company} • {related.location}
+              </p>
+              <p className="text-sm text-[#666] mt-1">
+                {related.type} • {related.salary}
+              </p>
               <div className="flex flex-wrap gap-1 mt-2">
-                {related.tags.slice(0, 3).map((tag: string) => (
-                  <span key={tag} className="bg-[#E1CE7A] text-[#424B54] px-2 py-0.5 rounded-full text-xs">
+                {related.tags?.slice(0, 3).map((tag: string) => (
+                  <span
+                    key={tag}
+                    className="bg-[#E1CE7A] text-[#424B54] px-2 py-0.5 rounded-full text-xs"
+                  >
                     {tag}
                   </span>
                 ))}
