@@ -25,7 +25,7 @@ const Header = () => {
             <Image
               src="/images/logo.png"
               alt="HireLink Logo"
-              width={100}   // Adjust to your preferred logo width
+              width={95}   // Adjust to your preferred logo width
               height={40}   // Keeps correct aspect ratio
               className="h-10 w-auto gap-4" // h-10 = 40px, auto scales width proportionally
             />
@@ -118,7 +118,7 @@ const Header = () => {
         <div className="lg:hidden">
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 text-[#424B54] hover:text-[#E1CE7A]"
+            className="inline-flex items-center justify-center rounded-md p-2 text-[#424B54] hover:text-blue-600"
             onClick={() => setMobileMenuOpen(true)}
           >
             <Bars3Icon className="h-6 w-6" />
@@ -145,7 +145,7 @@ const Header = () => {
               <span className="text-xl font-bold text-[#424B54]">HireLink</span>
               <button
                 type="button"
-                className="text-[#424B54] hover:text-[#E1CE7A]"
+                className="text-[#424B54] hover:text-blue-600"
                 onClick={() => setMobileMenuOpen(false)}  
               >
                 <XMarkIcon className="h-6 w-6" />
@@ -153,13 +153,13 @@ const Header = () => {
             </div>
 
             <div className="space-y-4">
-              <Link href="/jobs" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
+              <Link href="/jobs" className="block text-base font-medium text-[#424B54] hover:text-blue-600">
                 Jobs
               </Link>
-              <Link href="/companies" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
+              <Link href="/companies" className="block text-base font-medium text-[#424B54] hover:text-blue-600">
                 Companies
               </Link>
-              <Link href="#" className="block text-base font-medium text-[#424B54] hover:text-[#E1CE7A]">
+              <Link href="#" className="block text-base font-medium text-[#424B54] hover:text-blue-600">
                 About
               </Link>
 
@@ -170,7 +170,7 @@ const Header = () => {
                   <>
                     <Link
                       href="/profile"
-                      className="block text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]"
+                      className="block text-sm font-medium text-[#424B54] hover:text-blue-600"
                     >
                       Hi, {userName}
                     </Link>
@@ -186,13 +186,13 @@ const Header = () => {
                   <>
                     <button
                       onClick={() => signIn()}
-                      className="block w-full text-center text-sm font-medium text-[#424B54] hover:text-[#E1CE7A]"
+                      className="block w-full text-center text-sm font-medium text-[#424B54] hover:text-blue-600"
                     >
                       Login
                     </button>
                     <Link
                       href="#"
-                      className="mt-2 block w-full text-center text-sm font-medium bg-[#E1CE7A] text-[#424B54] rounded-md py-2 hover:bg-[#ebcfb2]"
+                      className="mt-2 block w-full text-center text-sm font-medium bg-blue-600 text-[#424B54] rounded-md py-2 hover:bg-blue-700"
                     >
                       Sign Up
                     </Link>

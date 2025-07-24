@@ -6,5 +6,9 @@ import HomeClient from '@/components/HomeClient';
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
 
-  return <HomeClient session={session} />;
+  return (
+    <div className="flex flex-col min-h-screen">
+    <HomeClient session={session} />
+    </div>
+  );
 }

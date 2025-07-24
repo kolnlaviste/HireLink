@@ -30,28 +30,28 @@ export default function HomeClient({ session }: Props) {
       <main className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center text-white">
         {/* Heading */}
         <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-          We offering <span className="text-blue-400">1,000</span> job vacancies today!
+          We are offering <span className="text-blue-400">1,000</span> job vacancies today!
         </h1>
         <p className="text-base md:text-lg max-w-xl mb-8">
           Find your dream job with us. We connect you with top companies and help you take the next step in your career.
         </p>
 
         {/* Search bar */}
-        <div className="flex mt-4 justify-center">
+        <div className="flex flex-wrap mt-4 justify-center px-4">
           <input
             type="text"
             placeholder="Search for jobs, companies, or skills"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="placeholder-gray-400 w-64 md:w-80 px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800"
+            className="placeholder-gray-400 flex-grow max-w-[320px] sm:max-w-none px-4 py-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800 min-w-[150px]"
           />
           <input
             type="text"
             placeholder="City, State, or Zip"
-            className="placeholder-gray-400 w-40 md:w-56 px-4 py-2 border border-l border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800"
+            className="placeholder-gray-400 flex-grow max-w-[224px] sm:max-w-none px-4 py-2 border border-l border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800 min-w-[120px]"
           />
           <button
-            className="px-4 py-2 rounded-r-md bg-blue-600 text-white hover:bg-blue-700 transition"
+            className="px-4 py-2 rounded-r-md bg-blue-600 text-white hover:bg-blue-700 transition flex-shrink-0"
             onClick={() => setIsOpen(true)}
           >
             Find Jobs
