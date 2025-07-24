@@ -4,7 +4,8 @@ import { useParams } from 'next/navigation';
 import { Tab } from '@headlessui/react';
 import classNames from 'classnames';
 import { jobs } from '@/lib/jobs';
-import Link from 'next/link'; // Required for linking related jobs
+import { companies } from '@/lib/companies';
+import Link from 'next/link'; 
 
 const tabs = ['Overview', 'Company', 'How to Apply'];
 
@@ -12,6 +13,11 @@ const JobDetailsPage = () => {
   const params = useParams();
   const jobId = params?.id;
   const job = jobs.find((job) => String(job.id) === jobId);
+  const getSlug = (companyName: string) => {
+  const company = companies.find((c) => c.name === companyName);
+    return company ? company.slug : '';
+  };
+
 
   if (!job) {
     return (
@@ -29,7 +35,14 @@ const JobDetailsPage = () => {
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-[#424B54]">{job.title}</h1>
         <p className="text-[#424B54] mt-1">
-          {job.company} • {job.location}
+          <span>
+            <Link
+            href={`/companies/${getSlug(job.company)}`}
+            className="hover:text-blue-700"
+            >
+              {job.company}
+            </Link>
+          </span> • {job.location}
         </p>
       </div>
 
