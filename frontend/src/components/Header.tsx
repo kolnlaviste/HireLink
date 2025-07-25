@@ -2,8 +2,14 @@
 
 import { Fragment, useState } from 'react';
 import { Dialog, Transition, Menu } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import {
+  Bars3Icon,
+  XMarkIcon,
+  UserCircleIcon,          // For Profile
+  ClipboardDocumentListIcon, // For Applications
+  ArrowRightOnRectangleIcon, // For Sign Out
+} from '@heroicons/react/24/outline'; // Updated import for 24/outline icons
+import { ChevronDownIcon } from '@heroicons/react/20/solid'; // Keep for dropdown arrow
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -12,7 +18,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session, status } = useSession();
 
-  const userName = session?.user?.name || session?.user?.email;
+  const userName = session?.user?.name || session?.user?.email?.split('@')[0]; // Use first part of email if name isn't available
 
   return (
     <header className="bg-white border-b border-[#E0E0E0]">
@@ -23,11 +29,11 @@ const Header = () => {
         <div className="flex items-center gap-4">
           <Link href="/">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.png" // Ensure this path is correct, or change to '/logo (1).png' if that's the one you want
               alt="HireLink Logo"
-              width={95}   
-              height={40}  
-              className="h-10 w-auto gap-4" 
+              width={95}
+              height={40}
+              className="h-10 w-auto gap-4"
             />
           </Link>
         </div>
@@ -67,17 +73,34 @@ const Header = () => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
-                  <div className="py-1">
+                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl bg-white shadow-lg border border-gray-200 focus:outline-none z-50 p-1.5"> {/* Changed to bg-white and border-gray-200 */}
+                  <div className="px-4 py-2.5 text-sm text-gray-600 border-b border-gray-200 mb-2"> {/* Text color and border changed */}
+                    <span className="font-semibold text-gray-900">Hi, {userName}</span> {/* Text color changed */}
+                  </div>
+                  <div className="space-y-1">
                     <Menu.Item>
                       {({ active }) => (
                         <Link
                           href="/profile"
                           className={`${
-                            active ? 'bg-gray-100' : ''
-                          } block px-4 py-2 text-sm text-gray-700`}
+                            active ? 'bg-blue-400 text-white' : 'text-gray-700' // Text color changed
+                          } flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition-colors`}
                         >
+                          <UserCircleIcon className="h-5 w-5 text-blue-600" /> {/* Icon color changed */}
                           Profile
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          href="/applications"
+                          className={`${
+                            active ? 'bg-blue-400 text-white' : 'text-gray-700' // Text color changed
+                          } flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition-colors`}
+                        >
+                          <ClipboardDocumentListIcon className="h-5 w-5 text-blue-600" /> {/* Icon color changed */}
+                          Applications
                         </Link>
                       )}
                     </Menu.Item>
@@ -86,9 +109,10 @@ const Header = () => {
                         <button
                           onClick={() => signOut()}
                           className={`${
-                            active ? 'bg-gray-100' : ''
-                          } block w-full text-left px-4 py-2 text-sm text-gray-700`}
+                            active ? 'bg-blue-400 text-white' : 'text-gray-700' // Text color changed
+                          } flex items-center gap-3 rounded-lg w-full text-left px-4 py-2.5 text-sm transition-colors`}
                         >
+                          <ArrowRightOnRectangleIcon className="h-5 w-5 text-blue-600" /> {/* Icon color changed */}
                           Sign Out
                         </button>
                       )}
@@ -147,7 +171,7 @@ const Header = () => {
               <button
                 type="button"
                 className="text-[#424B54] hover:text-blue-600"
-                onClick={() => setMobileMenuOpen(false)}  
+                onClick={() => setMobileMenuOpen(false)}
               >
                 <XMarkIcon className="h-6 w-6" />
               </button>
@@ -175,12 +199,20 @@ const Header = () => {
                     <Link
                       href="/profile"
                       className="block text-sm font-medium text-[#424B54] hover:text-blue-600"
+                      onClick={() => setMobileMenuOpen(false)}
                     >
                       Hi, {userName}
                     </Link>
-
+                    {/* Added Application link in mobile menu */}
+                    <Link
+                      href="/applications"
+                      className="block text-sm font-medium text-[#424B54] hover:text-blue-600 mt-2"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Applications
+                    </Link>
                     <button
-                      onClick={() => signOut()}
+                      onClick={() => { signOut(); setMobileMenuOpen(false); }}
                       className="mt-2 block w-full text-center text-sm font-medium bg-red-500 text-white rounded-md py-2 hover:bg-red-600"
                     >
                       Sign Out
@@ -189,7 +221,7 @@ const Header = () => {
                 ) : (
                   <>
                     <button
-                      onClick={() => signIn()}
+                      onClick={() => { signIn(); setMobileMenuOpen(false); }}
                       className="block w-full text-center text-sm font-medium text-[#424B54] hover:text-blue-600"
                     >
                       Login
@@ -197,6 +229,7 @@ const Header = () => {
                     <Link
                       href="#"
                       className="mt-2 block w-full text-center text-sm font-medium bg-blue-600 text-white rounded-md py-2 hover:bg-blue-700"
+                      onClick={() => setMobileMenuOpen(false)}
                     >
                       Sign Up
                     </Link>
