@@ -1,6 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 type ApplicationStatus = 'Pending' | 'Interview' | 'Rejected' | 'Accepted' | 'Withdrawn';
 
@@ -105,6 +108,33 @@ const getButtonClasses = (
 };
 
 export default function ApplicationsPageDesign() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  // Redirect if not jobseeker
+  useEffect(() => {
+    if (status === 'authenticated' && session.user.role !== 'jobseeker') {
+      router.push('/'); // redirect to homepage or a 403 page
+    }
+  }, [status, session, router]);
+
+  if (status === 'loading') {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500">Loading...</p>
+      </main>
+    );
+  }
+
+  // If unauthenticated or wrong role
+  if (!session || session.user.role !== 'jobseeker') {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-red-600 font-medium">You are not authorized to view this page.</p>
+      </main>
+    );
+  }
+
   const applicationsToDisplay = dummyApplications;
 
   return (

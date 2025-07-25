@@ -5,11 +5,11 @@ import { Dialog, Transition, Menu } from '@headlessui/react';
 import {
   Bars3Icon,
   XMarkIcon,
-  UserCircleIcon,          // For Profile
-  ClipboardDocumentListIcon, // For Applications
-  ArrowRightOnRectangleIcon, // For Sign Out
-} from '@heroicons/react/24/outline'; // Updated import for 24/outline icons
-import { ChevronDownIcon } from '@heroicons/react/20/solid'; // Keep for dropdown arrow
+  UserCircleIcon,
+  ClipboardDocumentListIcon,
+  ArrowRightOnRectangleIcon,
+} from '@heroicons/react/24/outline';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -18,7 +18,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session, status } = useSession();
 
-  const userName = session?.user?.name || session?.user?.email?.split('@')[0]; // Use first part of email if name isn't available
+  const userName = session?.user?.name || session?.user?.email?.split('@')[0];
 
   return (
     <header className="bg-white border-b border-[#E0E0E0]">
@@ -26,10 +26,11 @@ const Header = () => {
         className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
         aria-label="Global"
       >
+        {/* Logo */}
         <div className="flex items-center gap-4">
           <Link href="/">
             <Image
-              src="/images/logo.png" // Ensure this path is correct, or change to '/logo (1).png' if that's the one you want
+              src="/images/logo.png"
               alt="HireLink Logo"
               width={95}
               height={40}
@@ -38,14 +39,25 @@ const Header = () => {
           </Link>
         </div>
 
+        {/* Navigation Links */}
         <div className="flex-1 justify-center gap-8 hidden lg:flex lg:items-center lg:gap-x-10">
-          <Link href="/" className="text-sm font-medium text-[#424B54] hover:text-blue-400">Home</Link>
-          <Link href="/jobs" className="text-sm font-medium text-[#424B54] hover:text-blue-400">Jobs</Link>
-          <Link href="/companies" className="text-sm font-medium text-[#424B54] hover:text-blue-400">Companies</Link>
-          <Link href="/about" className="text-sm font-medium text-[#424B54] hover:text-blue-400">About</Link>
+          <Link href="/" className="text-sm font-medium text-[#424B54] hover:text-blue-400">
+            Home
+          </Link>
+          <Link href="/jobs" className="text-sm font-medium text-[#424B54] hover:text-blue-400">
+            Jobs
+          </Link>
+          <Link href="/companies" className="text-sm font-medium text-[#424B54] hover:text-blue-400">
+            Companies
+          </Link>
+          <Link href="/about" className="text-sm font-medium text-[#424B54] hover:text-blue-400">
+            About
+          </Link>
         </div>
 
+        {/* Right Menu (Auth) */}
         <div className="hidden lg:flex lg:items-center lg:gap-x-4">
+          {/* Show Post Job button for employers */}
           {session?.user?.role === 'employer' && (
             <Link
               href="/post-job"
@@ -54,6 +66,8 @@ const Header = () => {
               Post a Job
             </Link>
           )}
+
+          {/* Auth state handling */}
           {status === 'loading' ? (
             <p className="text-sm text-gray-500">Loading...</p>
           ) : session ? (
@@ -73,46 +87,53 @@ const Header = () => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl bg-white shadow-lg border border-gray-200 focus:outline-none z-50 p-1.5"> {/* Changed to bg-white and border-gray-200 */}
-                  <div className="px-4 py-2.5 text-sm text-gray-600 border-b border-gray-200 mb-2"> {/* Text color and border changed */}
-                    <span className="font-semibold text-gray-900">Hi, {userName}</span> {/* Text color changed */}
+                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl bg-white shadow-lg border border-gray-200 focus:outline-none z-50 p-1.5">
+                  <div className="px-4 py-2.5 text-sm text-gray-600 border-b border-gray-200 mb-2">
+                    <span className="font-semibold text-gray-900">Hi, {userName}</span>
                   </div>
                   <div className="space-y-1">
+                    {/* Profile always visible */}
                     <Menu.Item>
                       {({ active }) => (
                         <Link
                           href="/profile"
                           className={`${
-                            active ? 'bg-blue-400 text-white' : 'text-gray-700' // Text color changed
+                            active ? 'bg-blue-400 text-white' : 'text-gray-700'
                           } flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition-colors`}
                         >
-                          <UserCircleIcon className="h-5 w-5 text-blue-600" /> {/* Icon color changed */}
+                          <UserCircleIcon className="h-5 w-5 text-blue-600" />
                           Profile
                         </Link>
                       )}
                     </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          href="/applications"
-                          className={`${
-                            active ? 'bg-blue-400 text-white' : 'text-gray-700' // Text color changed
-                          } flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition-colors`}
-                        >
-                          <ClipboardDocumentListIcon className="h-5 w-5 text-blue-600" /> {/* Icon color changed */}
-                          Applications
-                        </Link>
-                      )}
-                    </Menu.Item>
+
+                    {/* Applications only for jobseekers */}
+                    {session.user.role === 'jobseeker' && (
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            href="/applications"
+                            className={`${
+                              active ? 'bg-blue-400 text-white' : 'text-gray-700'
+                            } flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm transition-colors`}
+                          >
+                            <ClipboardDocumentListIcon className="h-5 w-5 text-blue-600" />
+                            Applications
+                          </Link>
+                        )}
+                      </Menu.Item>
+                    )}
+
+                    {/* Sign out */}
                     <Menu.Item>
                       {({ active }) => (
                         <button
                           onClick={() => signOut()}
                           className={`${
-                            active ? 'bg-blue-400 text-white' : 'text-gray-700' // Text color changed
+                            active ? 'bg-blue-400 text-white' : 'text-gray-700'
                           } flex items-center gap-3 rounded-lg w-full text-left px-4 py-2.5 text-sm transition-colors`}
                         >
-                          <ArrowRightOnRectangleIcon className="h-5 w-5 text-blue-600" /> {/* Icon color changed */}
+                          <ArrowRightOnRectangleIcon className="h-5 w-5 text-blue-600" />
                           Sign Out
                         </button>
                       )}
@@ -139,7 +160,7 @@ const Header = () => {
           )}
         </div>
 
-
+        {/* Mobile menu button */}
         <div className="lg:hidden">
           <button
             type="button"
@@ -151,6 +172,7 @@ const Header = () => {
         </div>
       </nav>
 
+      {/* Mobile Menu */}
       <Transition show={mobileMenuOpen} as={Fragment}>
         <Dialog as="div" className="lg:hidden" onClose={setMobileMenuOpen}>
           <Transition.Child
@@ -178,16 +200,32 @@ const Header = () => {
             </div>
 
             <div className="space-y-4">
-              <Link href="/" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/"
+                className="block text-base font-medium text-[#424B54] hover:text-blue-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Home
               </Link>
-              <Link href="/jobs" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/jobs"
+                className="block text-base font-medium text-[#424B54] hover:text-blue-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Jobs
               </Link>
-              <Link href="/companies" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/companies"
+                className="block text-base font-medium text-[#424B54] hover:text-blue-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Companies
               </Link>
-              <Link href="/about" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/about"
+                className="block text-base font-medium text-[#424B54] hover:text-blue-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 About
               </Link>
 
@@ -203,16 +241,23 @@ const Header = () => {
                     >
                       Hi, {userName}
                     </Link>
-                    {/* Added Application link in mobile menu */}
-                    <Link
-                      href="/applications"
-                      className="block text-sm font-medium text-[#424B54] hover:text-blue-600 mt-2"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Applications
-                    </Link>
+
+                    {/* Applications only for jobseekers in mobile */}
+                    {session.user.role === 'jobseeker' && (
+                      <Link
+                        href="/applications"
+                        className="block text-sm font-medium text-[#424B54] hover:text-blue-600 mt-2"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Applications
+                      </Link>
+                    )}
+
                     <button
-                      onClick={() => { signOut(); setMobileMenuOpen(false); }}
+                      onClick={() => {
+                        signOut();
+                        setMobileMenuOpen(false);
+                      }}
                       className="mt-2 block w-full text-center text-sm font-medium bg-red-500 text-white rounded-md py-2 hover:bg-red-600"
                     >
                       Sign Out
@@ -221,7 +266,10 @@ const Header = () => {
                 ) : (
                   <>
                     <button
-                      onClick={() => { signIn(); setMobileMenuOpen(false); }}
+                      onClick={() => {
+                        signIn();
+                        setMobileMenuOpen(false);
+                      }}
                       className="block w-full text-center text-sm font-medium text-[#424B54] hover:text-blue-600"
                     >
                       Login
