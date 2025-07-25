@@ -1,6 +1,8 @@
 'use client';
 
 import Image from 'next/image';
+import { Briefcase, Building2, Bolt, ShieldCheck, Lightbulb, Users, Star } from "lucide-react";
+
 
 const AboutPage = () => {
   return (
@@ -44,65 +46,66 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="bg-white py-20">
+      {/* Why Choose HireLink Section */}
+        <section className="bg-white py-20">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
             Why Choose HireLink?
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
             {[
-              {
-                title: 'For Job Seekers',
-                desc: 'Browse tailored opportunities, filter by location, and apply seamlessly to positions that match your goals.',
-                icon: '💼',
-              },
-              {
-                title: 'For Employers',
-                desc: 'Post job openings in minutes, manage applicants, and discover top talent ready to make an impact.',
-                icon: '🏢',
-              },
-              {
-                title: 'Seamless Experience',
-                desc: 'Enjoy a modern interface with real-time updates and intuitive navigation for stress-free hiring.',
-                icon: '⚡',
-              },
+                {
+                title: "For Job Seekers",
+                desc: "Browse tailored opportunities, filter by location, and apply seamlessly to positions that match your career goals.",
+                icon: <Briefcase className="w-8 h-8 text-blue-600" />,
+                },
+                {
+                title: "For Employers",
+                desc: "Post job openings in minutes, manage applicants, and discover top talent ready to make an impact.",
+                icon: <Building2 className="w-8 h-8 text-blue-600" />,
+                },
+                {
+                title: "Seamless Experience",
+                desc: "Enjoy a modern interface with real-time updates and intuitive navigation for stress-free hiring.",
+                icon: <Bolt className="w-8 h-8 text-blue-600" />,
+                },
             ].map((feature) => (
-              <div
+                <div
                 key={feature.title}
-                className="bg-gray-50 border rounded-xl p-6 text-center hover:shadow-md transition"
-              >
-                <div className="text-4xl mb-4">{feature.icon}</div>
+                className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-center hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+                >
+                <div className="flex justify-center mb-4">{feature.icon}</div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">{feature.title}</h3>
                 <p className="text-gray-600 text-sm">{feature.desc}</p>
-              </div>
+                </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Values Section */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-          Our Core Values
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-          {[
-            { name: 'Integrity', desc: 'We prioritize transparency and trust in everything we do.' },
-            { name: 'Innovation', desc: 'We constantly improve and adopt new technologies to serve better.' },
-            { name: 'Community', desc: 'We foster meaningful relationships between talent and companies.' },
-            { name: 'Excellence', desc: 'We strive to deliver top-tier experiences for users and employers alike.' },
-          ].map((value) => (
-            <div
-              key={value.name}
-              className="p-6 bg-white border rounded-lg hover:shadow-md transition"
-            >
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">{value.name}</h3>
-              <p className="text-gray-600 text-sm">{value.desc}</p>
             </div>
-          ))}
         </div>
-      </section>
+        </section>
+
+{/* Core Values Section */}
+<section className="max-w-6xl mx-auto px-6 py-20">
+  <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+    Our Core Values
+  </h2>
+  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+    {[
+      { name: "Integrity", desc: "We prioritize transparency and trust in everything we do.", icon: <ShieldCheck className="w-6 h-6 text-blue-600 mx-auto mb-3" /> },
+      { name: "Innovation", desc: "We constantly improve and adopt new technologies to serve better.", icon: <Lightbulb className="w-6 h-6 text-blue-600 mx-auto mb-3" /> },
+      { name: "Community", desc: "We foster meaningful relationships between talent and companies.", icon: <Users className="w-6 h-6 text-blue-600 mx-auto mb-3" /> },
+      { name: "Excellence", desc: "We strive to deliver top-tier experiences for users and employers alike.", icon: <Star className="w-6 h-6 text-blue-600 mx-auto mb-3" /> },
+    ].map((value) => (
+      <div
+        key={value.name}
+        className="p-6 bg-white border rounded-lg hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+      >
+        {value.icon}
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">{value.name}</h3>
+        <p className="text-gray-600 text-sm">{value.desc}</p>
+      </div>
+    ))}
+  </div>
+</section>
 
       {/* Team Section (Optional) */}
       <section className="bg-gray-50 py-20">
@@ -110,9 +113,9 @@ const AboutPage = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-12">Meet the Team</h2>
           <div className="grid gap-10 md:grid-cols-3">
             {[
-              { name: 'Koln Laviste', role: 'Founder & Lead Developer', img: '/profile1.jpg' },
-              { name: 'Jane Smith', role: 'UI/UX Designer', img: '/profile2.jpg' },
-              { name: 'John Doe', role: 'Backend Engineer', img: '/profile3.jpg' },
+              { name: 'Juan Carlos', role: 'Founder & Lead Developer', img: '/default-logo.png' },
+              { name: 'Jane Smith', role: 'UI/UX Designer', img: '/default-logo.png' },
+              { name: 'John Doe', role: 'Backend Engineer', img: '/default-logo.png' },
             ].map((member) => (
               <div key={member.name} className="bg-white rounded-lg shadow p-6 hover:shadow-md transition">
                 <Image
