@@ -84,7 +84,7 @@ const JobDetailsPage = () => {
         {job.tags?.map((tag: string) => (
           <span
             key={tag}
-            className="bg-[#E1CE7A] text-[#424B54] px-3 py-1 rounded-full text-xs font-medium"
+            className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium"
           >
             {tag}
           </span>
@@ -100,7 +100,7 @@ const JobDetailsPage = () => {
                 classNames(
                   'px-4 py-2 text-sm font-medium border-b-2 transition',
                   selected
-                    ? 'text-[#424B54] border-[#E1CE7A]'
+                    ? 'text-[#424B54] border-blue-600'
                     : 'text-[#888] border-transparent hover:text-[#424B54]'
                 )
               }
@@ -126,7 +126,7 @@ const JobDetailsPage = () => {
       <div className="mt-6">
         <a
           href={`mailto:careers@elinnov.com?subject=Application – ${encodeURIComponent(job.title)}`}
-          className="bg-[#E1CE7A] hover:bg-[#ebcfb2] text-[#424B54] font-medium px-6 py-3 rounded-md inline-block"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-md inline-block"
         >
           Apply Now
         </a>
@@ -140,7 +140,7 @@ const JobDetailsPage = () => {
             <Link
               key={related.id}
               href={`/jobs/${related.id}`}
-              className="block p-4 border border-[#E1CE7A] rounded-md hover:shadow-sm transition"
+              className="block p-4 border border-blue-600 rounded-md hover:shadow-sm transition"
             >
               <h3 className="font-semibold text-[#424B54] text-lg">{related.title}</h3>
               <p className="text-sm text-[#666] mt-1">
@@ -153,7 +153,7 @@ const JobDetailsPage = () => {
                 {related.tags?.slice(0, 3).map((tag: string) => (
                   <span
                     key={tag}
-                    className="bg-[#E1CE7A] text-[#424B54] px-2 py-0.5 rounded-full text-xs"
+                    className="bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs"
                   >
                     {tag}
                   </span>
