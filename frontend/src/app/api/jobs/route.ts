@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     id: Date.now().toString(), // store as string
     tags: [],
     about: '',
-    apply: body.applyLink ? `Apply here: ${body.applyLink}` : 'No application link provided',
+    apply: body.applyLink ? `Apply here: ${body.applyLink}` : 'No application link provided', 
     ...body,
   };
 

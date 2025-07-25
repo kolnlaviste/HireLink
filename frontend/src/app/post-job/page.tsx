@@ -26,10 +26,12 @@ const PostJobPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Convert comma-separated tags to array
+    // Convert tags from comma-separated to array
     const payload = {
       ...form,
-      tags: form.tags.split(',').map((tag) => tag.trim())
+      tags: form.tags
+        ? form.tags.split(',').map((tag) => tag.trim())
+        : []
     };
 
     const res = await fetch('/api/jobs', {
@@ -39,7 +41,10 @@ const PostJobPage = () => {
     });
 
     if (res.ok) {
-      router.push('/jobs');
+      const { job } = await res.json();
+
+      // Redirect to the job details page of the newly created job
+      router.push(`/jobs/${job.id}`);
     }
   };
 
@@ -47,6 +52,7 @@ const PostJobPage = () => {
     <div className="max-w-3xl mx-auto px-6 py-12">
       <h1 className="text-3xl font-bold mb-6">Post a Job</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Job Title */}
         <input
           type="text"
           name="title"
@@ -56,6 +62,8 @@ const PostJobPage = () => {
           required
           className="w-full p-3 border rounded"
         />
+
+        {/* Company */}
         <input
           type="text"
           name="company"
@@ -65,6 +73,8 @@ const PostJobPage = () => {
           required
           className="w-full p-3 border rounded"
         />
+
+        {/* Location */}
         <input
           type="text"
           name="location"
@@ -73,6 +83,8 @@ const PostJobPage = () => {
           onChange={handleChange}
           className="w-full p-3 border rounded"
         />
+
+        {/* Job Type */}
         <select
           name="type"
           value={form.type}
@@ -84,6 +96,8 @@ const PostJobPage = () => {
           <option>Contract</option>
           <option>Internship</option>
         </select>
+
+        {/* Salary */}
         <input
           type="text"
           name="salary"
@@ -92,6 +106,8 @@ const PostJobPage = () => {
           onChange={handleChange}
           className="w-full p-3 border rounded"
         />
+
+        {/* Tags */}
         <input
           type="text"
           name="tags"
@@ -100,6 +116,8 @@ const PostJobPage = () => {
           onChange={handleChange}
           className="w-full p-3 border rounded"
         />
+
+        {/* Job Description */}
         <textarea
           name="description"
           placeholder="Job Description"
@@ -109,6 +127,8 @@ const PostJobPage = () => {
           required
           className="w-full p-3 border rounded"
         />
+
+        {/* About Company */}
         <textarea
           name="about"
           placeholder="About the Company"
@@ -117,6 +137,8 @@ const PostJobPage = () => {
           rows={3}
           className="w-full p-3 border rounded"
         />
+
+        {/* How to Apply */}
         <textarea
           name="apply"
           placeholder="How to Apply"
@@ -126,6 +148,7 @@ const PostJobPage = () => {
           className="w-full p-3 border rounded"
         />
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700"
