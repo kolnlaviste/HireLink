@@ -40,19 +40,20 @@ const Header = () => {
         </div>
 
         <div className="hidden lg:flex lg:items-center lg:gap-x-4">
-          <Link
-            href="/post-job"
-            className="text-sm font-medium rounded-md bg-blue-600 text-white px-4 py-2 hover:bg-[#2f353c] transition"
-          >
-            Post a Job
-          </Link>
-
+          {session?.user?.role === 'employer' && (
+            <Link
+              href="/post-job"
+              className="text-sm font-medium rounded-md bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 transition"
+            >
+              Post a Job
+            </Link>
+          )}
           {status === 'loading' ? (
             <p className="text-sm text-gray-500">Loading...</p>
           ) : session ? (
             <Menu as="div" className="relative inline-block text-left">
               <div>
-                <Menu.Button className="inline-flex justify-center items-center gap-1 text-sm font-medium text-[#424B54] hover:text-[#E1CE7A] transition">
+                <Menu.Button className="inline-flex justify-center items-center gap-1 text-sm font-medium text-[#424B54] hover:text-blue-600 transition">
                   Hi, {userName}
                   <ChevronDownIcon className="w-4 h-4" />
                 </Menu.Button>
@@ -100,13 +101,13 @@ const Header = () => {
             <>
               <button
                 onClick={() => signIn()}
-                className="text-sm font-medium text-[#424B54] hover:text-[#E1CE7A] transition"
+                className="text-sm font-medium text-[#424B54] hover:text-blue-400 transition"
               >
                 Login
               </button>
               <Link
                 href="#"
-                className="text-sm font-medium rounded-md bg-[#E1CE7A] text-[#424B54] px-4 py-2 hover:bg-[#ebcfb2] transition"
+                className="text-sm font-medium rounded-md bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 transition"
               >
                 Sign Up
               </Link>
@@ -195,7 +196,7 @@ const Header = () => {
                     </button>
                     <Link
                       href="#"
-                      className="mt-2 block w-full text-center text-sm font-medium bg-blue-600 text-[#424B54] rounded-md py-2 hover:bg-blue-700"
+                      className="mt-2 block w-full text-center text-sm font-medium bg-blue-600 text-white rounded-md py-2 hover:bg-blue-700"
                     >
                       Sign Up
                     </Link>

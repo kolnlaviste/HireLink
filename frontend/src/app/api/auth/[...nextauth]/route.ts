@@ -14,19 +14,32 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // Temporary mock user
-        const user = {
-          id: '1',
-          name: 'Test User',
-          email: credentials.email,
-        };
+        // Mock users
+        const mockUsers = [
+          {
+            id: '1',
+            name: 'Employer User',
+            email: 'employer@example.com',
+            password: 'password123',
+            role: 'employer',
+          },
+          {
+            id: '2',
+            name: 'Jobseeker User',
+            email: 'jobseeker@example.com',
+            password: 'password123',
+            role: 'jobseeker',
+          },
+        ];
 
-        // In real usage, validate credentials from your DB here
-        if (
-          credentials.email === 'test@example.com' &&
-          credentials.password === 'password123'
-        ) {
-          return user;
+        // Find matching user
+        const user = mockUsers.find(
+          (u) => u.email === credentials.email && u.password === credentials.password
+        );
+
+        if (user) {
+          const { password, ...userWithoutPassword } = user;
+          return userWithoutPassword;
         }
 
         return null;
@@ -34,9 +47,24 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: '/login', // Optional: custom login page
+    signIn: '/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
+
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = (user as any).role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.role = token.role as string;
+      }
+      return session;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
