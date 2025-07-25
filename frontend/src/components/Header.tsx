@@ -36,7 +36,7 @@ const Header = () => {
           <Link href="/" className="text-sm font-medium text-[#424B54] hover:text-blue-400">Home</Link>
           <Link href="/jobs" className="text-sm font-medium text-[#424B54] hover:text-blue-400">Jobs</Link>
           <Link href="/companies" className="text-sm font-medium text-[#424B54] hover:text-blue-400">Companies</Link>
-          <Link href="#" className="text-sm font-medium text-[#424B54] hover:text-blue-400">About</Link>
+          <Link href="/about" className="text-sm font-medium text-[#424B54] hover:text-blue-400">About</Link>
         </div>
 
         <div className="hidden lg:flex lg:items-center lg:gap-x-4">
@@ -162,7 +162,7 @@ const Header = () => {
               <Link href="/companies" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
                 Companies
               </Link>
-              <Link href="#" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/about" className="block text-base font-medium text-[#424B54] hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
                 About
               </Link>
 
