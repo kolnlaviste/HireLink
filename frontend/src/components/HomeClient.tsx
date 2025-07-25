@@ -11,14 +11,6 @@ export default function HomeClient({ session }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  if (!session) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <p className="text-lg text-gray-700">Please log in to access the homepage.</p>
-      </div>
-    );
-  }
-
   return (
     <div
       className="relative h-screen w-full bg-[url('/images/bg.jpg')] bg-cover bg-center bg-no-repeat"
