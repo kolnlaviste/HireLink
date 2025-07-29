@@ -15,10 +15,10 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/companies", companiesRoutes);
-app.use("/api/jobs", jobRoutes);
-app.use("/api/applications", applicationRoutes);
-app.use("/api/users", userRoutes);
+app.use("/companies", companiesRoutes);
+app.use("/jobs", jobRoutes);
+app.use("/applications", applicationRoutes);
+app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("HireLink API is running...");
