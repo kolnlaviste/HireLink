@@ -14,18 +14,17 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  role      String // "jobseeker" or "employer"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relation to Jobs (for employers)
+  id           Int          @id @default(autoincrement())
+  name         String
+  email        String       @unique
+  password     String
+  role         String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   jobs         Job[]
   applications Application[]
-  Company      Company[]
+
+  companies    Company[]    @relation("UserCompanies") // <-- lowercase name & match below
 }
 
 model Company {
@@ -35,10 +34,11 @@ model Company {
   location String?
   website  String?
   ownerId  Int
-  owner    User    @relation(fields: [ownerId], references: [id])
+  owner    User    @relation("UserCompanies", fields: [ownerId], references: [id]) // must match
 
   jobs Job[]
 }
+
 
 model Job {
   id          Int      @id @default(autoincrement())
