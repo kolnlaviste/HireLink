@@ -3,9 +3,13 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { Clock, CheckCircle, XCircle, Briefcase, CalendarDays, ArrowRight, Home, Ban } from 'lucide-react';
+
 
 type ApplicationStatus = 'Pending' | 'Interview' | 'Rejected' | 'Accepted' | 'Withdrawn';
+
 
 type Application = {
   id: string;
@@ -16,187 +20,167 @@ type Application = {
   jobId: string;
 };
 
-const dummyApplications: Application[] = [
-  {
-    id: 'app1',
-    jobTitle: 'Frontend Developer',
-    companyName: 'InnovateX Solutions',
-    status: 'Interview',
-    applicationDate: '2025-07-15',
-    jobId: 'job123',
-  },
-  {
-    id: 'app2',
-    jobTitle: 'Backend Engineer (Node.js)',
-    companyName: 'DataGrid Technologies',
-    status: 'Pending',
-    applicationDate: '2025-07-20',
-    jobId: 'job124',
-  },
-  {
-    id: 'app3',
-    jobTitle: 'UX/UI Designer',
-    companyName: 'Creative Spark Studios',
-    status: 'Rejected',
-    applicationDate: '2025-07-10',
-    jobId: 'job125',
-  },
-  {
-    id: 'app4',
-    jobTitle: 'Senior Full Stack Developer',
-    companyName: 'Quantum Innovations Inc.',
-    status: 'Accepted',
-    applicationDate: '2025-07-01',
-    jobId: 'job126',
-  },
-  {
-    id: 'app5',
-    jobTitle: 'Mobile App Developer (React Native)',
-    companyName: 'Appify Global',
-    status: 'Pending',
-    applicationDate: '2025-07-22',
-    jobId: 'job127',
-  },
-  {
-    id: 'app6',
-    jobTitle: 'DevOps Engineer',
-    companyName: 'CloudNet Systems',
-    status: 'Withdrawn',
-    applicationDate: '2025-07-05',
-    jobId: 'job128',
-  },
-];
-
-// Status badges with lighter theme
-const getStatusBadgeClasses = (status: ApplicationStatus) => {
-  const baseClasses =
-    'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold';
+const getStatusBadge = (status: ApplicationStatus) => {
+  let classes = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold gap-1';
+  let icon = null;
 
   switch (status) {
     case 'Pending':
-      return `${baseClasses} bg-yellow-100 text-yellow-700 border-yellow-300`;
+      classes += ' bg-yellow-100 text-yellow-700';
+      icon = <Clock className="w-3 h-3" />;
+      break;
     case 'Interview':
-      return `${baseClasses} bg-blue-100 text-blue-700 border-blue-300`;
+      classes += ' bg-blue-100 text-blue-700';
+      icon = <Briefcase className="w-3 h-3" />; // Using Briefcase for interview, could be Phone if preferred
+      break;
     case 'Rejected':
-      return `${baseClasses} bg-red-100 text-red-700 border-red-300`;
+      classes += ' bg-red-100 text-red-700';
+      icon = <XCircle className="w-3 h-3" />;
+      break;
     case 'Accepted':
-      return `${baseClasses} bg-green-100 text-green-700 border-green-300`;
+      classes += ' bg-green-100 text-green-700';
+      icon = <CheckCircle className="w-3 h-3" />;
+      break;
     case 'Withdrawn':
-      return `${baseClasses} bg-gray-100 text-gray-700 border-gray-300`;
+      classes += ' bg-gray-100 text-gray-700';
+      icon = <Ban className="w-3 h-3" />; // Using Ban for withdrawn
+      break;
     default:
-      return `${baseClasses} bg-gray-100 text-gray-700 border-gray-300`;
+      classes += ' bg-gray-100 text-gray-700';
+      icon = <Clock className="w-3 h-3" />; // Default icon
   }
-};
-
-const getButtonClasses = (
-  variant: 'default' | 'outline' | 'destructive',
-  fullWidth: boolean = false
-) => {
-  const baseClasses = `px-4 py-2 rounded-md font-medium transition-colors ${
-    fullWidth ? 'w-full' : ''
-  }`;
-  switch (variant) {
-    case 'default':
-      return `${baseClasses} bg-blue-600 text-white hover:bg-blue-700`;
-    case 'outline':
-      return `${baseClasses} border border-blue-600 text-blue-600 hover:bg-blue-50`;
-    case 'destructive':
-      return `${baseClasses} bg-red-600 text-white hover:bg-red-700`;
-    default:
-      return `${baseClasses} bg-gray-600 text-white hover:bg-gray-700`;
-  }
+  return (
+    <span className={classes}>
+      {icon} {status}
+    </span>
+  );
 };
 
 export default function ApplicationsPageDesign() {
-  const { data: session, status } = useSession();
+  const { data: session, status: sessionStatus } = useSession(); // Renamed status to sessionStatus to avoid conflict
   const router = useRouter();
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [loading, setLoading] = useState(true); // Added loading state for data fetch
+  const [error, setError] = useState<string | null>(null); // Added error state for data fetch
 
-  // Redirect if not jobseeker
+  // Role protection
   useEffect(() => {
-    if (status === 'authenticated' && session.user.role !== 'jobseeker') {
-      router.push('/'); // redirect to homepage or a 403 page
+    if (sessionStatus === 'authenticated' && session?.user.role !== 'jobseeker') {
+      router.push('/');
     }
-  }, [status, session, router]);
+  }, [sessionStatus, session, router]);
 
-  if (status === 'loading') {
+  useEffect(() => {
+    // Fetch applications from API
+    const fetchApplications = async () => {
+      if (sessionStatus === 'loading' || session?.user.role !== 'jobseeker') {
+        // Do not fetch if session is still loading or user is not a jobseeker
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/applications');
+        if (!res.ok) {
+          throw new Error('Failed to fetch applications');
+        }
+        const data: Application[] = await res.json();
+        setApplications(data);
+      } catch (err) {
+        console.error('Error fetching applications:', err);
+        setError('Failed to load applications. Please try again.');
+      } finally {
+        setLoading(false); // Set loading to false after fetch attempt
+      }
+    };
+
+    // Only fetch if authenticated and user is a jobseeker
+    if (sessionStatus === 'authenticated' && session?.user.role === 'jobseeker') {
+      fetchApplications();
+    }
+  }, [sessionStatus, session]); // Add session to dependency array
+
+  // Loading state (matched to ProfilePage's loading style)
+  if (sessionStatus === 'loading' || loading) { // Check both session loading and data loading
     return (
-      <main className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100">
+        <p className="text-lg text-gray-600 animate-pulse">Loading applications...</p>
       </main>
     );
   }
 
-  // If unauthenticated or wrong role
-  if (!session || session.user.role !== 'jobseeker') {
+  // Unauthorized/Error state
+  if (!session || session.user.role !== 'jobseeker' || error) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
-        <p className="text-red-600 font-medium">You are not authorized to view this page.</p>
+      <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6 text-center">
+        {error ? (
+          <p className="text-lg text-red-600 font-medium mb-4">{error}</p>
+        ) : (
+          <p className="text-lg text-red-600 font-medium mb-4">
+            <Ban className="w-8 h-8 text-red-500 mb-2 mx-auto" />
+            You are not authorized to view this page.
+          </p>
+        )}
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition"
+        >
+          <Home className="w-5 h-5 mr-2" /> Go to Homepage
+        </Link>
       </main>
     );
   }
-
-  const applicationsToDisplay = dummyApplications;
 
   return (
-    <main className="min-h-screen bg-white py-16">
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 text-[#424B54]">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 py-16 px-6 sm:px-8 lg:px-12">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-12 text-gray-900">
           My Applications
         </h1>
 
-        {applicationsToDisplay.length === 0 ? (
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 text-center max-w-2xl mx-auto shadow-sm">
-            <p className="text-xl text-gray-600 mb-6">
+        {applications.length === 0 ? (
+          <div className="bg-white border border-gray-200 rounded-xl p-8 text-center max-w-2xl mx-auto shadow-md hover:shadow-lg transform hover:scale-[1.01] transition-all duration-200">
+            <p className="text-xl text-gray-700 mb-6">
               You haven&apos;t applied for any jobs yet. Start exploring opportunities!
             </p>
-            <Link href="/jobs" className={getButtonClasses('default', true)}>
-              Browse Jobs
+            <Link
+              href="/jobs"
+              className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition"
+            >
+              <Briefcase className="w-5 h-5 mr-2" /> Browse Jobs
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {applicationsToDisplay.map((app) => (
-              <div
+            {applications.map((app) => (
+              <Link
                 key={app.id}
-                className="bg-white border border-gray-200 rounded-xl p-6 shadow hover:shadow-md transition"
+                href={`/jobs/${app.jobId}`}
+                className="group bg-white border border-gray-200 rounded-xl p-6 shadow-md hover:shadow-lg transform hover:scale-[1.01] transition-all duration-200 block relative overflow-hidden"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <h2 className="text-xl font-semibold text-[#424B54] leading-tight">
-                    {app.jobTitle}
-                  </h2>
-                  <span className={getStatusBadgeClasses(app.status)}>
-                    {app.status}
-                  </span>
-                </div>
-                <p className="text-gray-500 text-sm mb-2">{app.companyName}</p>
-                <p className="text-gray-400 text-xs mb-4">
-                  Applied on:{' '}
-                  {new Date(app.applicationDate).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </p>
+                {/* Subtle background accent on hover, matching AboutPage vibe */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-xl"></div>
 
-                <div className="flex flex-col gap-3 pt-4 border-t border-gray-200">
-                  <Link
-                    href={`/jobs/${app.jobId}`}
-                    className={getButtonClasses('outline', true)}
-                  >
-                    View Job Details
-                  </Link>
-                  {app.status === 'Pending' && (
-                    <button className={getButtonClasses('destructive', true)}>
-                      Withdraw Application
-                    </button>
-                  )}
-                  {app.status === 'Interview' && (
-                    <button className={getButtonClasses('default', true)}>
-                      Schedule Interview
-                    </button>
-                  )}
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between mb-4">
+                    <h2 className="text-xl font-bold text-gray-800 leading-tight group-hover:text-blue-600 transition duration-200 pr-2">
+                      {app.jobTitle}
+                    </h2>
+                    {getStatusBadge(app.status)}
+                  </div>
+                  <p className="text-gray-600 text-sm mb-2">{app.companyName}</p>
+                  <p className="flex items-center text-gray-500 text-sm gap-2">
+                    <CalendarDays className="w-4 h-4 text-gray-400" />
+                    Applied on {new Date(app.applicationDate).toLocaleDateString()}
+                  </p>
+
+                  {/* Optional: A "View Details" text link if the whole card isn't a link */}
+                  <div className="mt-4 pt-4 border-t border-gray-100 text-right">
+                    <span className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors duration-200">
+                      View Job Details <ArrowRight className="w-4 h-4 ml-1" />
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

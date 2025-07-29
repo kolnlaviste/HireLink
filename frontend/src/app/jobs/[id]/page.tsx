@@ -6,10 +6,12 @@ import classNames from 'classnames';
 import { companies } from '@/lib/companies';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const tabs = ['Overview', 'Company', 'How to Apply'];
 
 const JobDetailsPage = () => {
+  const router = useRouter();
   const params = useParams();
   const jobId = params?.id; // always string
   const [job, setJob] = useState<any>(null);
@@ -41,6 +43,22 @@ const JobDetailsPage = () => {
   const getSlug = (companyName: string) => {
     const company = companies.find((c) => c.name === companyName);
     return company ? company.slug : '';
+  };
+
+  const handleApply = async () => {
+    await fetch("/api/applications", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: job.id,
+        jobTitle: job.title,
+        companyName: job.company,
+        status: "Pending",
+        applicationDate: new Date().toISOString(),
+      }),
+    });
+
+    router.push("/applications"); 
   };
 
   if (loading) {
@@ -153,12 +171,12 @@ const JobDetailsPage = () => {
 
           {/* Apply Now Button - More prominent */}
           <div className="mt-8 text-center lg:text-left">
-            <a
-              href={`mailto:careers@elinnov.com?subject=Application – ${encodeURIComponent(job.title)}`}
+            <button
+              onClick={handleApply}
               className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 text-lg"
             >
               Apply Now
-            </a>
+            </button>
           </div>
         </div>
 
