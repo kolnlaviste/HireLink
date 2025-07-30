@@ -1,5 +1,6 @@
 import express from "express";
 import prisma from "../prismaClient";
+import { authenticateToken } from "../middleware/auth";
 
 const router = express.Router();
 
@@ -31,15 +32,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// CREATE job
-router.post("/", async (req, res) => {
-  const { title, description, companyId, postedById } = req.body;
+// CREATE job (Protected)
+router.post("/", authenticateToken, async (req, res) => {
+  const { title, description, companyId } = req.body;
+  const postedById = (req as any).user.id; // Get from JWT
 
-  if (!title || !description || !companyId || !postedById) {
+  if (!title || !description || !companyId) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
   try {
+    // Optional: Check if company exists
+    const company = await prisma.company.findUnique({ where: { id: companyId } });
+    if (!company) return res.status(404).json({ error: "Company not found" });
+
     const job = await prisma.job.create({
       data: { title, description, companyId, postedById },
     });
@@ -49,27 +55,38 @@ router.post("/", async (req, res) => {
   }
 });
 
-// UPDATE job
-router.put("/:id", async (req, res) => {
+// UPDATE job (Protected)
+router.put("/:id", authenticateToken, async (req, res) => {
   const id = parseInt(req.params.id);
   const { title, description } = req.body;
+  const userId = (req as any).user.id;
 
   try {
-    const job = await prisma.job.update({
+    // Ensure user owns this job
+    const job = await prisma.job.findUnique({ where: { id } });
+    if (!job) return res.status(404).json({ error: "Job not found" });
+    if (job.postedById !== userId) return res.status(403).json({ error: "Not authorized" });
+
+    const updatedJob = await prisma.job.update({
       where: { id },
       data: { title, description },
     });
-    res.json(job);
+    res.json(updatedJob);
   } catch (err) {
     res.status(500).json({ error: "Failed to update job" });
   }
 });
 
-// DELETE job
-router.delete("/:id", async (req, res) => {
+// DELETE job (Protected)
+router.delete("/:id", authenticateToken, async (req, res) => {
   const id = parseInt(req.params.id);
+  const userId = (req as any).user.id;
 
   try {
+    const job = await prisma.job.findUnique({ where: { id } });
+    if (!job) return res.status(404).json({ error: "Job not found" });
+    if (job.postedById !== userId) return res.status(403).json({ error: "Not authorized" });
+
     await prisma.job.delete({ where: { id } });
     res.json({ message: "Job deleted" });
   } catch (err) {

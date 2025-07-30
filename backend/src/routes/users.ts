@@ -2,6 +2,7 @@ import express from "express";
 import prisma from "../prismaClient";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { authenticateToken, authorizeRoles } from "../middleware/auth";
 
 const router = express.Router();
 
@@ -22,32 +23,25 @@ router.get("/", async (req, res) => {
 });
 
 // CREATE a new user (register)
-router.post("/", async (req, res) => {
-  const { name, email, password, role } = req.body;
+// CREATE a new user (register)
+router.post("/", authenticateToken, authorizeRoles("employer", "admin"), async (req, res) => {
+    const { title, description, companyId, postedById } = req.body;
 
-  if (!name || !email || !password || !role) {
-    return res.status(400).json({ error: "All fields are required" });
-  }
+    if (!title || !description || !companyId || !postedById) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
 
-  try {
-    // Hash password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        role,
-      },
-    });
-
-    res.status(201).json(user);
-  } catch (err: any) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to create user" });
-  }
+    try {
+      const job = await prisma.job.create({
+        data: { title, description, companyId, postedById },
+      });
+      res.status(201).json(job);
+    } catch (err) {
+      res.status(500).json({ error: "Failed to create job" });
+    }
 });
+
+
 
 // GET single user by ID
 router.get("/:id", async (req, res) => {
